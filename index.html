@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diktátorok és művészek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Alegreya+Sans+SC:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: archív aktacsomó – fejléc, szereplőkártya, nyomok + rács egymás mellett széles képernyőn, alatta jelmagyarázat és zárt megoldás-boríték */
+:root{
+  --paper:#eceee9; --sheet:#f8f9f6; --ink:#1f2421; --muted:#5d6560; --rule:#c4cac3;
+  --stamp:#8a2c27; --stamp-soft:#f1dedb; --ok:#2f6b45; --ok-soft:#dcebe0; --hl:#e7e2c4;
+  --display:"Alegreya",Georgia,"Times New Roman",serif;
+  --body:"Alegreya",Georgia,"Times New Roman",serif;
+  --label:"Alegreya Sans SC","Trebuchet MS",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#171a18; --sheet:#20241f; --ink:#e3e6e1; --muted:#9aa29c; --rule:#3a403b;
+  --stamp:#e08a7f; --stamp-soft:#3d2523; --ok:#7fc495; --ok-soft:#1f3527; --hl:#3a3822; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#171a18; --sheet:#20241f; --ink:#e3e6e1; --muted:#9aa29c; --rule:#3a403b;
+  --stamp:#e08a7f; --stamp-soft:#3d2523; --ok:#7fc495; --ok-soft:#1f3527; --hl:#3a3822; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:24px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+.eyebrow{font-family:var(--label);letter-spacing:.08em;font-size:.85rem;color:var(--stamp);font-weight:700}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:18px}
+header h1{font-size:clamp(2rem,5vw,3.3rem);font-weight:800}
+header p{margin:0;max-width:68ch;color:var(--muted)}
+.stamp{align-self:flex-start;font-family:var(--label);font-weight:700;letter-spacing:.12em;color:var(--stamp);border:2px solid var(--stamp);padding:2px 10px;transform:rotate(-2deg);font-size:.9rem}
+section{display:flex;flex-direction:column;gap:14px}
+h2{font-size:1.5rem}
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.who{background:var(--sheet);border:1px solid var(--rule);padding:10px 14px;display:flex;flex-direction:column;gap:2px}
+.who b{font-family:var(--display);font-size:1.12rem}
+.who span{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.how{font-size:.95rem;color:var(--muted);max-width:75ch;margin:0}
+.work{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:1100px){.work{grid-template-columns:330px minmax(0,1fr)}}
+ol.clues{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:c}
+ol.clues li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;gap:6px;padding:6px 8px;background:var(--sheet);border:1px solid var(--rule);cursor:pointer;font-size:.98rem;line-height:1.4}
+ol.clues li::before{content:counter(c)".";font-family:var(--mono);font-size:.85rem;color:var(--stamp);padding-top:2px}
+ol.clues li.done{opacity:.5;text-decoration:line-through}
+ol.clues li:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font-family:var(--label);font-weight:700;letter-spacing:.05em;font-size:.95rem;background:var(--sheet);color:var(--ink);border:1.5px solid var(--ink);padding:6px 14px;cursor:pointer}
+button.primary{background:var(--ink);color:var(--sheet)}
+button:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+label.opt{font-size:.92rem;display:flex;gap:6px;align-items:center;color:var(--muted)}
+.msg{font-family:var(--mono);font-size:.85rem;padding:6px 10px;border:1px solid var(--rule);background:var(--sheet)}
+.gridbox{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule);padding:12px}
+table.g{border-collapse:collapse;font-size:.8rem}
+table.g th,table.g td{padding:0}
+th.cat{font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:.82rem;border-bottom:1px solid var(--ink);padding:4px 2px;text-align:center}
+th.v{height:132px;vertical-align:bottom;font-weight:500;font-family:var(--body)}
+th.v div{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;padding:4px 0;margin:0 auto;font-size:.85rem}
+th.rcat{font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:.78rem;writing-mode:vertical-rl;transform:rotate(180deg);padding:0 4px;border-right:1px solid var(--ink)}
+th.r{text-align:right;padding:0 8px 0 4px;white-space:nowrap;font-weight:500;font-size:.85rem;height:27px}
+td.c{width:27px;min-width:27px;height:27px;border:1px solid var(--rule);text-align:center;cursor:pointer;font-family:var(--mono);font-size:.95rem;user-select:none;background:var(--sheet)}
+td.c:hover{background:var(--hl)}
+td.c.x{color:var(--stamp)}
+td.c.y{background:var(--ok-soft);color:var(--ok);font-weight:500}
+td.c.bad{outline:2px solid var(--stamp);outline-offset:-2px}
+td.c.bl{border-left:2px solid var(--ink)} td.c.bt{border-top:2px solid var(--ink)}
+td.gap{border:none}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.lg{background:var(--sheet);border:1px solid var(--rule);padding:12px 14px}
+.lg h3{font-family:var(--label);font-size:.95rem;letter-spacing:.06em;margin-bottom:6px;color:var(--stamp)}
+.lg dl{margin:0;display:grid;gap:6px}
+.lg dt{font-weight:700;font-size:.95rem}
+.lg dd{margin:0;font-size:.92rem;color:var(--muted);line-height:1.4}
+.envelope{border:2px dashed var(--stamp);padding:16px;background:var(--stamp-soft);display:flex;flex-direction:column;gap:10px}
+.envelope p{margin:0;max-width:70ch}
+.sol{display:flex;flex-direction:column;gap:16px}
+.sol article{background:var(--sheet);border:1px solid var(--rule);padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.sol h3{font-size:1.3rem}
+.sol .row{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:4px 12px;font-size:.96rem}
+.sol .row b{font-family:var(--label);letter-spacing:.04em;font-size:.86rem;color:var(--muted);padding-top:2px}
+.src{font-size:.92rem;border-left:3px solid var(--stamp);padding-left:10px;color:var(--muted);margin:4px 0 0}
+.refl ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px;max-width:75ch}
+.rubric{overflow-x:auto}
+.rubric table{border-collapse:collapse;font-size:.92rem;min-width:620px}
+.rubric th,.rubric td{border:1px solid var(--rule);padding:6px 8px;vertical-align:top;text-align:left}
+.rubric th{font-family:var(--label);letter-spacing:.04em;background:var(--sheet)}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:10px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header>
+  <span class="stamp">SZIGORÚAN BIZALMAS · 5 AKTA</span>
+  <h1>Diktátorok és művészek</h1>
+  <p>Öt alkotó, három diktátor. Mindegyik művész másképp élte túl – vagy szolgálta ki – a hatalmat. A nyomok alapján párosítsd össze, ki mikor élt, mit tett vele a diktátor, hogyan viszonyult hozzá, milyen különös epizód és milyen tragikus fordulat tartozik az életéhez.</p>
+</header>
+
+<section aria-labelledby="h-cast">
+  <h2 id="h-cast">Az akták szereplői</h2>
+  <div class="cast">
+    <div class="who"><b>Dmitrij Sosztakovics</b><span>zeneszerző · szovjet · Sztálin</span></div>
+    <div class="who"><b>Leni Riefenstahl</b><span>filmrendező · német · Hitler</span></div>
+    <div class="who"><b>Makszim Gorkij</b><span>író · szovjet · Sztálin</span></div>
+    <div class="who"><b>Kodály Zoltán</b><span>zeneszerző · magyar · Rákosi</span></div>
+    <div class="who"><b>Németh László</b><span>író · magyar · Rákosi</span></div>
+  </div>
+  <p class="how">Kattints egy cellára: első kattintás <b>×</b> (kizárva), második <b>✓</b> (összetartozik), harmadik törli. Minden kategóriában minden elem pontosan egy alkotóhoz tartozik. A két nem-művész elemet összekötő nyomokat (pl. 14., 15.) jegyezd fel, amíg ki nem derül, kihez tartoznak. A nyomok elegendők a megoldáshoz; előzetes tudás segít, de nem pótolja a bizonyítást. Egy nyomra kattintva áthúzhatod, ha már felhasználtad.</p>
+</section>
+
+<div class="work">
+  <section aria-labelledby="h-clues">
+    <h2 id="h-clues">Nyomok</h2>
+    <ol class="clues" id="clues"></ol>
+  </section>
+  <section aria-labelledby="h-grid" style="min-width:0">
+    <h2 id="h-grid">Logikai rács</h2>
+    <div class="tools">
+      <button class="primary" id="check">Ellenőrzés</button>
+      <button id="reset">Rács törlése</button>
+      <label class="opt"><input type="checkbox" id="auto" checked> ✓ után automatikus × a sorban és oszlopban</label>
+    </div>
+    <div class="msg" id="msg" hidden></div>
+    <div class="gridbox"><table class="g" id="grid"></table></div>
+  </section>
+</div>
+
+<section aria-labelledby="h-leg">
+  <h2 id="h-leg">Jelmagyarázat – a rács rövidítései teljes szöveggel</h2>
+  <div class="legend" id="legend"></div>
+</section>
+
+<section aria-labelledby="h-sol">
+  <h2 id="h-sol">Megoldás és háttér</h2>
+  <div class="envelope" id="env">
+    <p>A boríték a teljes megoldást, a forráskritikai megjegyzéseket és a záró reflexiós kérdéseket tartalmazza. Csak akkor nyisd fel, ha végeztél, vagy a tanár engedi.</p>
+    <div class="tools"><button id="open1">Boríték felbontása</button></div>
+    <div class="tools" id="confirm" hidden><span>Biztosan? A megoldás azonnal látható lesz.</span><button class="primary" id="open2">Igen, felbontom</button><button id="open0">Mégse</button></div>
+  </div>
+  <div class="sol" id="sol" hidden></div>
+</section>
+
+<footer>Szabó Márta · Nyomozói Akták · logikai rács érettségire készülőknek</footer>
+</div>
+
+<script>
+const ART=['Sosztakovics','Riefenstahl','Gorkij','Kodály','Németh'];
+const CAT={
+ A:{n:'Művész',items:ART.map(a=>({s:a,f:a}))},
+ B:{n:'Életadatok',items:[
+  {s:'1868–1936',f:'1868–1936'},{s:'1882–1967',f:'1882–1967'},{s:'1901–1975',f:'1901–1975'},{s:'1902–2003',f:'1902–2003'},{s:'1906–1975',f:'1906–1975'}]},
+ C:{n:'A diktátor tette',items:[
+  {s:'Lesújtó cikk',f:'Miután megnézte a művész operáját, a párt lapjában vezércikk bélyegezte a zenét „káosznak”.'},
+  {s:'Filmet rendelt',f:'Rá bízta a pártkongresszus megfilmesítését, szinte korlátlan eszközökkel.'},
+  {s:'Várost nevezett el',f:'Hazacsalogatta külföldről, kastélyt adott neki, szülővárosát róla nevezte el.'},
+  {s:'Kitüntette',f:'Legmagasabb állami díjjal tüntette ki, és bár nem szerette, hozzányúlni nem mert.'},
+  {s:'Elhallgattatta',f:'Évekig nem engedte megjelenni saját műveit; fordításokból kellett megélnie.'}]},
+ D:{n:'A művész viszonya',items:[
+  {s:'Félelem',f:'Állandó félelemben élt, a hagyomány szerint bekészített bőrönddel várta a letartóztatást; nyilvános önkritikára kényszerült.'},
+  {s:'Rajongás',f:'Rajongott a diktátorért: egy győzelmes hadjárat után lelkes táviratban gratulált neki.'},
+  {s:'Dicsőítés',f:'Kiszolgálta a rendszert: meglátogatott egy kényszermunkatábort és elismerően írt róla, a kényszermunkát dicsőítő kötetet szerkesztett.'},
+  {s:'Távolságtartás',f:'Méltóságteljes távolságot tartott: nem lett párttag, nem írt ódát a vezérhez, tekintélyét mások védelmére használta.'},
+  {s:'Példázat',f:'Galileiről szóló drámájában a hatalom előtt meghajolni kényszerülő tudós sorsában írta meg saját helyzetét.'}]},
+ E:{n:'Érdekesség',items:[
+  {s:'Ostromszimfónia',f:'Egyik szimfóniáját a háború alatt egy ostromlott, éhező városban is előadták.'},
+  {s:'Búvárkodás',f:'Hetven fölött, korát letagadva búvárvizsgát tett, százévesen víz alatti filmet mutatott be.'},
+  {s:'Álnév: keserű',f:'Írói álneve „keserűt” jelent; valódi családneve Peskov.'},
+  {s:'Mise a ruhatárban',f:'Budapest ostromát az Operaház óvóhelyén vészelte át; miséjét 1945 februárjában az Operaház ruhatárában mutatták be.'},
+  {s:'Vidéki tanár',f:'A háború után néhány évig egy alföldi gimnáziumban tanított.'}]},
+ F:{n:'Tragikum',items:[
+  {s:'Kényszerű párttagság',f:'Idős korában nyomás alatt belépett a pártba; barátai szerint utána sírva fakadt.'},
+  {s:'Nincs több játékfilm',f:'A háború után egyetlen új játékfilmet sem forgathatott, pályája összeomlott.'},
+  {s:'Fia gyanús halála',f:'Fia gyanús körülmények között halt meg; később saját halálát is gyilkosságként „leplezték le” egy koncepciós perben.'},
+  {s:'Fegyelmi 1919',f:'1919 után fegyelmi eljárást indítottak ellene a forradalmi időkben vállalt intézményvezetői szerepe miatt.'},
+  {s:'Megbélyegzés',f:'A háború után 1943-as szárszói beszéde és „harmadikutas” nézetei miatt nyilvánosan megbélyegezték.'}]}
+};
+// megoldás: kategória -> elem indexe művészenként (ART sorrendben)
+const SOL={A:[0,1,2,3,4],B:[4,3,0,1,2],C:[0,1,2,3,4],D:[0,1,2,3,4],E:[0,1,2,3,4],F:[0,1,2,3,4]};
+// megjelenítési sorrend keverése, hogy a rácsban ne legyen átlós minta
+const PERM={C:[3,0,4,2,1],D:[2,4,1,0,3],E:[1,3,0,4,2],F:[4,2,0,3,1]};
+for(const c in PERM){const P=PERM[c];CAT[c].items=P.map(i=>CAT[c].items[i]);SOL[c]=ART.map((_,a)=>P.indexOf(a));}
+const artistOf=(c,i)=>SOL[c].indexOf(i);
+const CLUES=[
+ 'Németh László idősebb volt Riefenstahlnál, Riefenstahl pedig idősebb Sosztakovicsnál.',
+ 'Riefenstahl és Németh László között mindössze egy év a korkülönbség.',
+ 'A két szovjet alkotó közül az idősebbik dicsőítette a kényszermunkát.',
+ 'Akinek szülővárosát a diktátor róla nevezte el, ugyanaz, aki a kényszermunkát dicsőítette.',
+ 'Akinek operáját lesújtó vezércikk támadta, ugyanannak a diktátornak az árnyékában élt, mint aki a kényszermunkát dicsőítette.',
+ 'A lesújtó vezércikk célpontja élete végén kényszerből lépett be a pártba.',
+ 'Akinek a fia gyanús körülmények között halt meg, annak az írói álneve „keserűt” jelent.',
+ 'A Galilei-példázat szerzője idősebb volt annál, akinek szimfóniáját az ostromlott városban adták elő.',
+ 'A két magyar alkotó közül a fiatalabbik tanított a háború után vidéki gimnáziumban.',
+ 'Aki méltóságteljes távolságot tartott, pontosan 19 évvel idősebb volt a Galilei-példázat szerzőjénél.',
+ 'Akit kitüntettek, de hozzányúlni nem mertek, idősebb volt annál, akit évekig elhallgattattak.',
+ 'Akit 1919 után fegyelmi eljárással sújtottak, azt később a diktátor kitüntette.',
+ 'Akit szárszói beszéde miatt bélyegeztek meg, azt a diktátor évekig elhallgattatta.',
+ 'Aki a pártkongresszusi film megbízását kapta, idős korában búvárfilmes lett.',
+ 'Az idős korában búvárkodó alkotó lelkes táviratban gratulált diktátorának.'
+];
+const COLS=['B','C','D','E','F'], ROWS=['A'];
+const KEY='diktator-muvesz-racs-v2';
+let st={cells:{},clues:[]};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&s.cells) st=s;}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const ck=(r,ri,c,ci)=>r+ri+'|'+c+ci;
+
+// nyomok
+const cl=document.getElementById('clues');
+CLUES.forEach((t,i)=>{const li=document.createElement('li');li.textContent=t;li.tabIndex=0;
+ if(st.clues.includes(i))li.classList.add('done');
+ const tog=()=>{li.classList.toggle('done');st.clues=[...cl.children].map((x,j)=>x.classList.contains('done')?j:-1).filter(j=>j>=0);save()};
+ li.onclick=tog;li.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}};cl.appendChild(li)});
+
+// rács
+const g=document.getElementById('grid');
+function build(){
+ g.innerHTML='';
+ const h1=document.createElement('tr');h1.innerHTML='<th></th><th></th>'+COLS.map(c=>`<th class="cat" colspan="5">${CAT[c].n}</th>`).join('');g.appendChild(h1);
+ const h2=document.createElement('tr');h2.innerHTML='<th></th><th></th>'+COLS.map(c=>CAT[c].items.map(it=>`<th class="v"><div>${it.s}</div></th>`).join('')).join('');g.appendChild(h2);
+ ROWS.forEach((r,gi)=>{const cols=COLS.slice(0,5-gi);
+  CAT[r].items.forEach((it,ri)=>{const tr=document.createElement('tr');
+   if(ri===0){const th=document.createElement('th');th.className='rcat';th.rowSpan=5;th.textContent=CAT[r].n;tr.appendChild(th)}
+   const th=document.createElement('th');th.className='r';th.textContent=it.s;tr.appendChild(th);
+   cols.forEach((c,bi)=>CAT[c].items.forEach((_,ci)=>{const td=document.createElement('td');td.className='c'+(ci===0?' bl':'')+(ri===0?' bt':'');
+     const k=ck(r,ri,c,ci);td.dataset.k=k;td.dataset.r=r;td.dataset.ri=ri;td.dataset.c=c;td.dataset.ci=ci;
+     td.tabIndex=0;td.setAttribute('role','button');td.setAttribute('aria-label',CAT[r].items[ri].s+' – '+CAT[c].items[ci].s);
+     paint(td);td.onclick=()=>click(td);td.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();click(td)}};tr.appendChild(td)}));
+   for(let x=cols.length;x<5;x++){const td=document.createElement('td');td.className='gap';td.colSpan=5;tr.appendChild(td)}
+   g.appendChild(tr)})})
+}
+function paint(td){const v=st.cells[td.dataset.k]||0;td.classList.toggle('x',v===1);td.classList.toggle('y',v===2);td.textContent=v===1?'×':v===2?'✓':'';td.classList.remove('bad')}
+function click(td){const k=td.dataset.k;const v=((st.cells[k]||0)+1)%3;if(v)st.cells[k]=v;else delete st.cells[k];
+ if(v===2&&document.getElementById('auto').checked){const{r,ri,c,ci}=td.dataset;
+  g.querySelectorAll(`td.c[data-r="${r}"][data-c="${c}"]`).forEach(o=>{if(o!==td&&(o.dataset.ri===ri||o.dataset.ci===ci)&&!st.cells[o.dataset.k]){st.cells[o.dataset.k]=1;paint(o)}})}
+ paint(td);save();document.getElementById('msg').hidden=true}
+build();
+
+document.getElementById('check').onclick=()=>{let ok=0,bad=0;
+ g.querySelectorAll('td.c').forEach(td=>{const v=st.cells[td.dataset.k]||0;if(!v)return;
+  const truth=artistOf(td.dataset.r,+td.dataset.ri)===artistOf(td.dataset.c,+td.dataset.ci);
+  if((v===2&&truth)) ok++; if((v===2&&!truth)||(v===1&&truth)){bad++;td.classList.add('bad')}});
+ const m=document.getElementById('msg');m.hidden=false;
+ m.textContent=bad?`${bad} hibás jelölés (pirossal keretezve). Helyes ✓: ${ok}/25. Keresd meg, melyik nyomot értelmezted félre.`:
+  ok===25?'Hibátlan: mind a 25 összefüggés a helyén van. Felbonthatod a borítékot.':`Eddig nincs hibás jelölés. Helyes ✓: ${ok}/25.`};
+const rz=document.getElementById('reset');let armed=false;
+rz.onclick=()=>{if(!armed){armed=true;rz.textContent='Biztosan törlöd? Kattints újra';setTimeout(()=>{armed=false;rz.textContent='Rács törlése'},3000);return}
+ st.cells={};save();g.querySelectorAll('td.c').forEach(paint);armed=false;rz.textContent='Rács törlése';document.getElementById('msg').hidden=true};
+
+// jelmagyarázat
+document.getElementById('legend').innerHTML=['C','D','E','F'].map(c=>`<div class="lg"><h3>${CAT[c].n}</h3><dl>${CAT[c].items.map(it=>`<dt>${it.s}</dt><dd>${it.f}</dd>`).join('')}</dl></div>`).join('');
+
+// megoldás
+const BG=[
+ {h:'Dmitrij Sosztakovics',y:'1906–1975',
+  c:'1936 januárjában Sztálin megnézte A mcenszki járás Lady Macbethje című operát; két nappal később a Pravda vezércikke „zene helyett káosznak” nevezte. 1948-ban a Zsdanov-féle határozat formalizmussal vádolta.',
+  d:'Rettegett: 1937-ben, a nagy terror idején kivégezték pártfogóját, Tuhacsevszkij marsallt. Nyilvánosan önkritikát gyakorolt, közben műveiben kettős beszédet használt.',
+  e:'7. („Leningrádi”) szimfóniáját 1942. augusztus 9-én az ostromlott Leningrádban is előadták, hangszórókon a német állások felé is sugározva.',
+  f:'1960-ban nyomás alatt belépett az SZKP-ba; barátai visszaemlékezése szerint ezután sírva fakadt.',
+  src:'Forráskritika: a Szolomon Volkov által 1979-ben kiadott „Tanúvallomás” Sosztakovics emlékiratának mondja magát, de hitelessége vitatott. A bekészített bőrönd története is visszaemlékezésekből ismert. Mit bizonyít egy ilyen forrás, és mit nem?'},
+ {h:'Leni Riefenstahl',y:'1902–2003',
+  c:'Hitler rá bízta a nürnbergi pártkongresszus (1934) megfilmesítését: így készült Az akarat diadala (1935), majd az Olimpia (1938).',
+  d:'1940 júniusában, Párizs eleste után lelkes táviratban gratulált Hitlernek. A háború után azt állította, apolitikus művész volt.',
+  e:'1974 körül, hetven fölött – húsz évet letagadva – búvárvizsgát tett; 2002-ben, százévesen mutatta be Impressionen unter Wasser című víz alatti filmjét.',
+  f:'A háború után a nácitlanítási eljárás „útitársnak” minősítette; egyetlen új játékfilmet sem forgathatott.',
+  src:'Többnézőpontúság: a Tiefland című filmjéhez egy internálótáborból vitt roma statisztákat, akik közül sokakat később Auschwitzban öltek meg. Kinek a tragédiája Riefenstahl élettörténete – és kinek a tragédiáját hallgatja el az ő önéletírása?'},
+ {h:'Makszim Gorkij',y:'1868–1936',
+  c:'Sztálin hazacsalogatta olasz emigrációjából (1928-tól látogatások, 1932-től végleg), moszkvai palotát kapott, szülővárosát, Nyizsnyij Novgorodot 1932-ben Gorkijra nevezték át.',
+  d:'1929-ben meglátogatta a szolovki tábort és elismerően írt róla; társszerkesztője volt a Fehér-tengeri csatorna építését (kényszermunkát) dicsőítő 1934-es kötetnek. Korábban, 1917–18-ban még nyíltan bírálta a bolsevikokat.',
+  e:'Írói neve oroszul „keserűt” jelent; valódi neve Alekszej Peskov.',
+  f:'Fia, Makszim 1934-ben gyanús körülmények között halt meg. Az 1938-as moszkvai koncepciós perben Jagodát és orvosokat azzal vádolták, hogy Gorkijt és fiát megmérgezték.',
+  src:'Forráskritika: egy koncepciós per kicsikart vallomása mit árul el a valóságról, és mit a per szervezőinek szándékairól?'},
+ {h:'Kodály Zoltán',y:'1882–1967',
+  c:'A Rákosi-korszakban Kossuth-díjat kapott (1948, 1952; később 1957-ben harmadszor is). A rendszer nemzeti jelképként kezelte, ezért nem merte megtörni.',
+  d:'Nem lett párttag, nem írt ódát a vezérhez. Tekintélyét több alkalommal üldözöttek, meghurcolt kollégák és tanítványok védelmére használta.',
+  e:'Budapest ostromát feleségével az Operaház óvóhelyén vészelte át; Missa brevisét 1945. február 11-én az Operaház ruhatárában mutatták be.',
+  f:'A Tanácsköztársaság idején a Zeneakadémia aligazgatója volt; 1919 után fegyelmi eljárást indítottak ellene, és hosszabb időre félreállították.',
+  src:'Gondolkodj el: hogyan magyarázhatja az 1919-es tapasztalat Kodály későbbi óvatos, de határozott távolságtartását a politikától?'},
+ {h:'Németh László',y:'1901–1975',
+  c:'1949-től évekig alig jelenhettek meg saját művei; műfordításokból (Tolsztoj, Shakespeare és mások) élt.',
+  d:'1953-ban írta Galilei című drámáját: a hatalom előtt visszavonásra kényszerülő tudósban saját helyzetét is ábrázolta. A darabot évekig nem engedték színpadra; 1956. október 20-án mutatták be, három nappal a forradalom kitörése előtt.',
+  e:'1945 és 1948 között a hódmezővásárhelyi gimnáziumban tanított, ahol saját iskolakoncepcióját is kipróbálta.',
+  f:'A háború után 1943-as szárszói beszéde és „harmadikutas” nézetei miatt jobboldalisággal vádolták és megbélyegezték.',
+  src:'Összevetés: Kodály és Németh ugyanazon diktatúra alatt élt, mégis egészen másképp bánt velük a hatalom. Mi lehet ennek az oka?'}
+];
+function showSol(){
+ const s=document.getElementById('sol');
+ s.innerHTML=BG.map((b,i)=>`<article><h3>${b.h} <span style="font-family:var(--mono);font-size:.85rem;color:var(--muted)">${b.y}</span></h3>
+ <div class="row"><b>Diktátor tette</b><span>${b.c}</span><b>Viszonya</b><span>${b.d}</span><b>Érdekesség</b><span>${b.e}</span><b>Tragikum</b><span>${b.f}</span></div>
+ <p class="src">${b.src}</p></article>`).join('')+`
+ <article class="refl"><h3>Záró reflexió</h3><ol>
+ <li>Melyik nyomnál kellett két feltételt egyszerre fejben tartanod? Mi segített?</li>
+ <li>Hol csúszott be előzetes tudás a bizonyítás helyére? Mi lett volna, ha az a tudás téves?</li>
+ <li>Állítsd sorba az öt alkotót aszerint, mennyi mozgástere volt a diktátorral szemben. Indokold egy-egy mondattal.</li>
+ <li>Lehet-e egyszerre áldozat és kiszolgáló valaki? Melyik szereplőnél a legnehezebb eldönteni?</li></ol></article>
+ <article class="rubric"><h3>Értékelési szempontok (tanári)</h3><table>
+ <tr><th>Szempont</th><th>Kiváló</th><th>Megfelelő</th><th>Fejlesztendő</th></tr>
+ <tr><td>Logikai levezetés</td><td>Hibátlan rács; minden lépés nyommal igazolható</td><td>Kevés hiba, önállóan javítja</td><td>Találgat, nem tud nyomra hivatkozni</td></tr>
+ <tr><td>Történeti kontextus</td><td>Elhelyezi az alkotót a diktatúra működésében</td><td>Ismeri a főbb tényeket</td><td>Elszigetelt adatokat sorol</td></tr>
+ <tr><td>Forráskritika</td><td>Megnevezi a vitatott forrásokat és okát</td><td>Felismeri, hogy van vitatott forrás</td><td>Minden állítást egyformán hitelesnek kezel</td></tr>
+ <tr><td>Többnézőpontúság</td><td>Árnyaltan kezeli az áldozat–kiszolgáló kettősséget</td><td>Több nézőpontot említ</td><td>Egyoldalú ítéletet mond</td></tr></table></article>`;
+ s.hidden=false;document.getElementById('env').hidden=true}
+document.getElementById('open1').onclick=()=>{document.getElementById('confirm').hidden=false};
+document.getElementById('open0').onclick=()=>{document.getElementById('confirm').hidden=true};
+document.getElementById('open2').onclick=showSol;
+</script>
+
+</body>
+</html>
